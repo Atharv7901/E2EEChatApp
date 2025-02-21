@@ -1,27 +1,27 @@
 package authHandler
 
 import (
-	"encoding/json"
 	"net/http"
 
 	authmodels "github.com/Atharv7901/E2EEChatApp/models"
+	"github.com/gin-gonic/gin"
 )
 
-func (h *AuthHandler) SignUp(w http.ResponseWriter, r *http.Request) {
+func (h *AuthHandler) SignUp(c *gin.Context) {
 	var req authmodels.SignupRequest
 
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request payload", http.StatusBadRequest)
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
 		return
 	}
 
 	user, err := h.authService.CreateUser(req.FirstName, req.LastName, req.Email, req.Password)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusConflict)
+		c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
 		return
 	}
 
-	w.Header().Add("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(user)
+	c.JSON(http.StatusCreated, gin.H{"message": "User created Successfully!", "user": user})
 }

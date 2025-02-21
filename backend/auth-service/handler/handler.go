@@ -1,13 +1,12 @@
 package authHandler
 
 import (
-	"net/http"
-
 	authservice "github.com/Atharv7901/E2EEChatApp/service"
+	"github.com/gin-gonic/gin"
 )
 
 type AuthHandlerInterface interface {
-	SignUp(w http.ResponseWriter, r *http.Request)
+	SignUp(c *gin.Context)
 }
 
 type AuthHandler struct {
@@ -17,4 +16,3 @@ type AuthHandler struct {
 func NewAuthHandler(authservice authservice.AuthServiceInterface) AuthHandlerInterface {
 	return &AuthHandler{authService: authservice}
 }
-
