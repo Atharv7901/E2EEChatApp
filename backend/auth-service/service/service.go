@@ -6,6 +6,7 @@ import (
 
 type AuthServiceInterface interface {
 	CreateUser(firstName string, lastName string, email string, password string) (int, error)
+	Login(email string, password string) (string, error)
 }
 
 type AuthService struct {
