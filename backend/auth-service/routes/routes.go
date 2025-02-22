@@ -26,6 +26,7 @@ func (a *AuthServer) Run(authHandler authHandler.AuthHandlerInterface) error {
 	api := r.Group("/api/v1")
 	{
 		api.POST("/signup", authHandler.SignUp)
+		api.POST("/login", authHandler.Login)
 	}
 
 	return http.ListenAndServe(a.addr, r)
