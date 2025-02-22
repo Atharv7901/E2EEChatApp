@@ -25,7 +25,7 @@ func NewAuthStore(db *sql.DB) *AuthStore {
 
 func (s *AuthStore) GetUserByEmail(email string) (*db.User, error) {
 	user := db.User{}
-	err := s.db.QueryRow("SELECT id, firstName, lastName, email, createdAt, lastLoggedIn FROM users WHERE email = ?", email).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.CreatedAt, &user.LastLoggedIn)
+	err := s.db.QueryRow("SELECT id, firstName, lastName, email, password,createdAt, lastLoggedIn FROM users WHERE email = ?", email).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.CreatedAt, &user.LastLoggedIn)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, errors.New("user not found")
