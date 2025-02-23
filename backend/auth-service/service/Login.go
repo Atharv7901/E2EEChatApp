@@ -2,7 +2,6 @@ package authservice
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"time"
 
@@ -19,8 +18,6 @@ func (s *AuthService) Login(email string, password string) (string, error) {
 	}
 
 	//compare password hash
-	fmt.Println("this is the hash password", user)
-	fmt.Println("this is the password", password)
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
 		return "", errors.New("invalid credentials")
 	}
