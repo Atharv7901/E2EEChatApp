@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	chatHandler "github.com/Atharv7901/E2EEChatApp/chat-service/handler"
+	"github.com/Atharv7901/E2EEChatApp/chat-service/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,7 +26,7 @@ func (c *ChatServer) Run(chatHandler chatHandler.ChatHandlerInterface) error {
 
 	api := r.Group("/api/v1")
 	{
-		api.GET("/users", chatHandler.GetAllUsers)
+		api.GET("/users", middleware.AuthMiddleware(), chatHandler.GetAllUsers)
 	}
 
 	return http.ListenAndServe(c.addr, r)
