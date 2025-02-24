@@ -9,6 +9,7 @@ import (
 
 type ChatStoreInterface interface {
 	GetAllUsers() ([]db.User, error)
+	GetUserByID(id int) (*db.User, error)
 }
 
 type ChatStore struct {
@@ -42,4 +43,20 @@ func (s *ChatStore) GetAllUsers() ([]db.User, error) {
 	}
 
 	return users, nil
+}
+
+func (s *ChatStore) GetUserByID(id int) (*db.User, error) {
+	var user db.User
+
+	query := "SELECT id, firstName, lastName, email, createdAt, lastLoggedIn FROM users WHERE id = ?"
+	err := s.db.QueryRow(query, id).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.CreatedAt, &user.LastLoggedIn)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, errors.New("user not found")
+		}
+		return nil, err
+	}
+
+	return &user, err
 }
