@@ -7,6 +7,7 @@ import (
 
 type ChatServiceInterface interface {
 	GetAllUsers() ([]db.User, error)
+	GetUserByID(id int) (*db.User, error)
 }
 
 type ChatService struct {
