@@ -8,6 +8,7 @@ import (
 type ChatHandlerInterface interface {
 	GetAllUsers(c *gin.Context)
 	GetUserByID(c *gin.Context)
+	SendMessage(c *gin.Context)
 }
 
 type ChatHandler struct {
