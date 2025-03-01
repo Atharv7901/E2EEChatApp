@@ -5,6 +5,7 @@ import (
 
 	"github.com/Atharv7901/E2EEChatApp/chat-service/config"
 	chatHandler "github.com/Atharv7901/E2EEChatApp/chat-service/handler"
+	"github.com/Atharv7901/E2EEChatApp/chat-service/kafka"
 	chatroutes "github.com/Atharv7901/E2EEChatApp/chat-service/routes"
 	chatservice "github.com/Atharv7901/E2EEChatApp/chat-service/service"
 	chatstore "github.com/Atharv7901/E2EEChatApp/chat-service/store"
@@ -18,9 +19,12 @@ func main() {
 	}
 	config.ConnectionTest(db)
 
+	//initialize kafka
+	kafkaProducer := kafka.NewKafkaProducer("localhost:9092", "chat-messages")
+
 	//initialize store, service and handler
 	chatStore := chatstore.NewChatStore(db)
-	chatService := chatservice.NewChatService(chatStore)
+	chatService := chatservice.NewChatService(chatStore, kafkaProducer)
 	chatHandler := chatHandler.NewChatHandler(chatService)
 
 	//routes
