@@ -29,6 +29,7 @@ func (c *ChatServer) Run(chatHandler chatHandler.ChatHandlerInterface) error {
 		api.GET("/users", middleware.AuthMiddleware(), chatHandler.GetAllUsers)
 		api.GET("/users/:id", middleware.AuthMiddleware(), chatHandler.GetUserByID)
 		api.POST("/chat/send", middleware.AuthMiddleware(), chatHandler.SendMessage)
+		api.GET("/messages", middleware.AuthMiddleware(), chatHandler.FetchMessagesHandler)
 	}
 
 	return http.ListenAndServe(c.addr, r)
